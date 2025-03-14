@@ -24,6 +24,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
+ * @property-read Collection<Category> $categories
  */
 class User extends Authenticatable
 {
@@ -61,4 +63,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function categories(): HasMany
+    {
+        return $this->hasMany(Category::class);
+    }
 }

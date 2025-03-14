@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\WordController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\BuyRequestController;
 use App\Http\Controllers\Api\ContactRequestController;
 use App\Http\Controllers\Api\ManualController;
@@ -22,6 +24,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', fn(Request $request) => $request->user());
+
+    Route::post('/category', [CategoryController::class, 'store'])->name('category.store'); // tested
+    Route::delete('/category/{categoryId}', [CategoryController::class, 'delete'])->name('category.delete'); // tested
+
+    Route::controller(WordController::class)->prefix('/word')->group(function () {
+        Route::get('/', 'getWords')->name('word.getWords');
+        Route::get('/dictionary', 'getDictionaryWords')->name('word.getDictionaryWords');
+        Route::post('/', 'store')->name('word.store');
+        Route::get('/{wordId}', 'show')->name('word.show');
+        Route::put('/{wordId}', 'update')->name('word.update');
+        Route::delete('/{wordId}', 'delete')->name('word.delete');
+        Route::post('/{wordId}/move', 'move')->name('word.move');
+        Route::post('/{wordId}/progress', 'progress')->name('word.progress');
+    });
 });
 
 Route::group([], function () {
