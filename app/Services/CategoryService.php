@@ -3,17 +3,16 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\Category;
 
 class CategoryService
 {
-    public function store(int $userId, array $validated): void
+    public function store(User $user, array $validated): void
     {
-        Category::query()->create(array_merge($validated, ['user_id' => $userId]));
+        $user->categories()->create($validated);
     }
 
-    public function delete(User $user, int $categoryId): void
+    public function delete(User $user, int $id): void
     {
-        $user->categories()->where('id', $categoryId)->delete();
+        $user->categories()->where('id', $id)->delete();
     }
 }

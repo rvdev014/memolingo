@@ -4,6 +4,8 @@ namespace App\Enums;
 
 enum LearnStatus:int
 {
+    use BaseEnum;
+
     case Hard = 0;
     case Normal = 1;
     case Learned = 2;
@@ -16,4 +18,6 @@ enum LearnStatus:int
             self::Learned => 'Learned',
         };
     }
+
+
 }

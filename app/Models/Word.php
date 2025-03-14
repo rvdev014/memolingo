@@ -17,9 +17,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property LearnStatus $learn_status
  * @property int $learned_times
  * @property boolean $is_favorite
- * @property int $user_category_id
+ * @property int $category_id
  *
- * @property UserCategory $userCategory
+ * @property Category $category
  */
 class Word extends Model
 {
@@ -32,8 +32,8 @@ class Word extends Model
         'is_favorite' => 'boolean',
     ];
 
-    public function userCategory(): BelongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(UserCategory::class);
+        return $this->belongsTo(Category::class);
     }
 }

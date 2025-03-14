@@ -1,15 +1,10 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\WordController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\BuyRequestController;
-use App\Http\Controllers\Api\ContactRequestController;
-use App\Http\Controllers\Api\ManualController;
-use App\Http\Controllers\Api\TourController;
-use App\Http\Controllers\Api\TourRequestController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,27 +17,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function() {
     Route::get('/user', fn(Request $request) => $request->user());
 
     Route::post('/category', [CategoryController::class, 'store'])->name('category.store'); // tested
-    Route::delete('/category/{categoryId}', [CategoryController::class, 'delete'])->name('category.delete'); // tested
+    Route::delete('/category/{id}', [CategoryController::class, 'delete'])->name('category.delete'); // tested
 
-    Route::controller(WordController::class)->prefix('/word')->group(function () {
-        Route::get('/', 'getWords')->name('word.getWords');
-        Route::get('/dictionary', 'getDictionaryWords')->name('word.getDictionaryWords');
-        Route::post('/', 'store')->name('word.store');
-        Route::get('/{wordId}', 'show')->name('word.show');
-        Route::put('/{wordId}', 'update')->name('word.update');
-        Route::delete('/{wordId}', 'delete')->name('word.delete');
-        Route::post('/{wordId}/move', 'move')->name('word.move');
-        Route::post('/{wordId}/progress', 'progress')->name('word.progress');
+    Route::controller(WordController::class)->prefix('/word')->group(function() {
+        Route::post('/', 'store')->name('word.store'); // tested
+        Route::get('/', 'getWords')->name('word.getWords'); // tested
+        Route::get('/dictionary', 'getDictionaryWords')->name('word.getDictionaryWords'); // tested
+        Route::get('/{id}', 'show')->name('word.show'); // tested
+        Route::put('/{id}', 'update')->name('word.update'); // tested
+        Route::delete('/{id}', 'delete')->name('word.delete'); // tested
+        Route::post('/{id}/move', 'move')->name('word.move'); // tested
+        Route::post('/{id}/progress', 'progress')->name('word.progress'); // tested
     });
 });
 
-Route::group([], function () {
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth:sanctum');
-    Route::post('/me', [AuthController::class, 'me'])->name('me');
+Route::group([], function() {
+    Route::post('/login', [AuthController::class, 'login'])->name('login'); // tested
+    Route::post('/register', [AuthController::class, 'register'])->name('register'); // tested
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth:sanctum'); // tested
+    Route::post('/me', [AuthController::class, 'me'])->name('me'); // tested
 });

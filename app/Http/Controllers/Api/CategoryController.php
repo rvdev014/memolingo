@@ -8,36 +8,37 @@ use Illuminate\Http\JsonResponse;
 use App\Services\CategoryService;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CategoryController extends Controller
 {
+    use ApiHelper;
+
     public function __construct(protected CategoryService $categoryService) {}
 
     public function store(Request $request): JsonResponse
     {
-        $userId = auth('sanctum')->id();
+        $user = $this->user();
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
             'is_favorite' => 'nullable|boolean',
-            'parent_id' => 'nullable|integer|exists:categories,id,user_id,' . $userId,
+            'parent_id' => 'nullable|integer|exists:categories,id,user_id,' . $user->id,
         ]);
-        $this->categoryService->store($userId, $validated);
+        $this->categoryService->store($user, $validated);
 
-        return response()->json(['message' => 'success']);
+        return $this->successRes();
     }
 
-    public function delete($categoryId): JsonResponse
+    public function delete($id): JsonResponse
     {
-        /** @var User $user */
-        $user = User::query()->findOrFail(auth('sanctum')->id());
-
-        if ($user->categories()->where('id', $categoryId)->doesntExist()) {
-            throw new BadRequestException('Category not found');
+        $user = $this->user();
+        if ($user->categories()->where('id', $id)->doesntExist()) {
+            throw new BadRequestHttpException('Category not found');
         }
 
-        $this->categoryService->delete($user, $categoryId);
+        $this->categoryService->delete($user, $id);
 
-        return response()->json(['message' => 'deleted']);
+        return $this->successRes('deleted');
     }
 }
