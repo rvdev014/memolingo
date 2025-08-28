@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.2-fpm AS base
 
 COPY ./php/php.ini /usr/local/etc/php/conf.d/php.ini
 
@@ -23,6 +23,11 @@ RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql && \
 
 COPY --from=composer:2.4.4 /usr/bin/composer /usr/local/bin/composer
 
+WORKDIR /app
+
+
+FROM base AS local
+
 ARG uid
 ARG gid
 
@@ -30,6 +35,9 @@ RUN useradd -G www-data,root -u $uid -d /home/developer developer
 RUN mkdir -p /home/developer/.composer && \
     chown -R developer:developer /home/developer
 
-WORKDIR /app
-
 USER developer
+
+
+FROM base AS server
+
+

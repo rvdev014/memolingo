@@ -14,6 +14,7 @@ services:
             args:
                 uid: ${UID}
                 gid: ${GID}
+            target: ${DOCKER_APP_TARGET:-server}
             context: _docker/development
             dockerfile: php/Dockerfile
         volumes:
