@@ -40,4 +40,7 @@ USER developer
 
 FROM base AS server
 
+RUN chown -R www-data:www-data /app
+RUN chmod -R 755 /app
+
 
