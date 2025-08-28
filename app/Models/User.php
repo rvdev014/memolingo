@@ -79,4 +79,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Category::class);
     }
+
+    public function userKnownLexicon(): HasMany
+    {
+        return $this->hasMany(UserKnownLexicon::class);
+    }
+
+    public function userDictionary(): HasMany
+    {
+        return $this->hasMany(UserDictionary::class);
+    }
+
+    public function ingestedTexts(): HasMany
+    {
+        return $this->hasMany(IngestedText::class);
+    }
 }
